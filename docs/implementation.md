@@ -14,7 +14,7 @@ leads to a page that tells how to put stuff there
 git remote add origin https://github.com/eldrgeek/automike.git master
 git push -u origin master
 ```
-
+The [repository](https://github.com/eldrgeek/automike)
 ## Installing rewired hot loader
 
 Instructions are [here](https://github.com/cdharris/react-app-rewire-hot-loader)
