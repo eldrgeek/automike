@@ -1,8 +1,19 @@
-const rewireReactHotLoader = require('react-app-rewire-hot-loader')
+const rewireReactHotLoader = require("react-app-rewire-hot-loader");
+const rewireAliases = require("react-app-rewire-aliases");
 
 /* config-overrides.js */
-module.exports = function override (config, env) {
+module.exports = function override(config, env) {
   console.log(config);
-  config = rewireReactHotLoader(config, env)
-  return config
-}
+  config.resolve.alias["react-dom"] = "@hot-loader/react-dom";
+
+  config = rewireReactHotLoader(config, env);
+
+  return config;
+};
+/*
+const rewireAliases = require('react-app-rewire-aliases');
+resolve: {
+    alias: {
+      'react-dom': '@hot-loader/react-dom'
+    }
+}*/
