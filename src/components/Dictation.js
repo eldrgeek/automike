@@ -1,18 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/dictation.css";
 // import init from "../DictationController.js"
 import SpeechRecognition from "react-speech-recognition";
 let init = () => {};
-
-let onChange = event => {
-  let statusArea = document.querySelector("#status");
-  console.log(event.target);
-
-  if (event.target && event.target.value) {
-    console.log("value", event.target.value);
-    statusArea.textContent = event.target.value;
-  }
-};
 
 const options = {
   autoStart: true,
@@ -20,15 +10,29 @@ const options = {
 };
 
 let listening = options.autoStart;
-
+let count = 0;
 const Dictation = function({
   store,
   transcript,
   resetTranscript,
   startListening,
   stopListening,
+  listening,
   browserSupportsSpeechRecognition
 }) {
+  // const [count,setCount] = useState(0)
+  count++;
+  let onChange = event => {
+    setCount(count + 1);
+    console.log(count);
+    // let statusArea = document.querySelector("#status");
+    // console.log(event.target);
+
+    // if (event.target && event.target.value) {
+    //   console.log("value", event.target.value);
+    //   statusArea.textContent = event.target.value;
+    // }
+  };
   let initStore = () => {
     init(store);
   };
@@ -63,8 +67,14 @@ const Dictation = function({
         <button onClick={resetTranscript} id="stop">
           Reset
         </button>
-        <i onClick={toggleListening} className="fa fa-microphone" />
-        <p className="status" id="status" contentEditable="true" />
+        <i
+          onClick={toggleListening}
+          className={"fa fa-microphone " + (listening ? "recording" : "")}
+        />
+        <p className="status" id="status" contentEditable="true">
+          {" "}
+          {count}{" "}
+        </p>
       </div>
     </div>
   );
