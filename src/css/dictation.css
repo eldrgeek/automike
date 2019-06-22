@@ -5,8 +5,8 @@ body,
 }
 
 body {
-  background: #1e2440;
-  color: #f2efe2;
+  background: #ffffff;
+  color: #000000
   font-size: 16px;
   font-family: "Kaushan Script", cursive;
   font-family: "Shadows Into Light", cursive;
@@ -49,10 +49,10 @@ body {
   border-radius: 50%;
   cursor: pointer;
   /* margin-top: 1rem; */
-  float: right;
+  float: left;
   width: 2rem;
   height: 2rem;
-  display: flex !important;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
