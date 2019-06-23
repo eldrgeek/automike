@@ -27,6 +27,23 @@ body {
   /* overflow: scroll; */
   height: 90%;
 }
+.editor {
+ 
+  height:100vh;
+}
+[contenteditable]:focus {
+  outline: 0px solid transparent;
+}
+.base{
+  color: rgb(214, 34, 34);
+}
+.final{
+  color: #fa1ab9;
+}
+.interim{
+  color: #151392;
+}
+
 .text-box {
   height: 100%;
   overflow: scroll;

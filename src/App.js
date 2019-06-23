@@ -3,14 +3,13 @@ import React from "react";
 import "./App.css";
 // import { hot } from "react-hot-loader";
 import Dictation from "./components/Dictation";
-import QuillTest from "./components/QuillTest";
 // const finishHot = hot(module); // const AutoButton = (props) => {
 
 function App() {
   return (
     <React.Fragment>
-      <QuillTest />
-      {/* <Dictation /> */}
+      {/* <QuillTest /> */}
+      <Dictation />
     </React.Fragment>
   );
 }
