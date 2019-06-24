@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "../css/dictation.css";
 // import init from "../DictationController.js"
 import SpeechRecognition from "react-speech-recognition";
-import debounce from "debounce";
 
 const options = {
   autoStart: true,
@@ -13,8 +12,7 @@ let listening = options.autoStart;
 
 let lastInterim = "";
 let lastFinal = "";
-let debouncedChange = debounce((f, arg) => f(arg), 200);
-
+let timeOut = null;
 const Dictation = function({
   store,
   transcript,
@@ -27,17 +25,22 @@ const Dictation = function({
   browserSupportsSpeechRecognition
 }) {
   const [count, setCount] = useState(0);
-  const [content, setContent] = useState("initial Content");
-  const transferAndReset = () => {
+  const [content, setContent] = useState("");
+  const transferAndReset = finalTranscript => {
+    timeOut = null;
     setCount(count + 1);
     setContent(content + " " + finalTranscript);
     resetTranscript();
   };
   if (interimTranscript !== lastInterim || finalTranscript !== lastFinal) {
-    debouncedChange(transferAndReset);
+    // debouncedChange(transferAndReset);
     lastInterim = interimTranscript;
     lastFinal = finalTranscript;
   }
+  if (timeOut) {
+    clearTimeout(timeOut);
+  }
+  timeOut = setTimeout(() => transferAndReset(finalTranscript), 1000);
 
   const toggleListening = () => {
     if (listening) {
@@ -53,17 +56,14 @@ const Dictation = function({
   return (
     <div className="container">
       <div className="editor">
-        <p contentEditable>
-          <span className="base">this is some content </span>
-
+        <p contentEditable suppressContentEditableWarning={true}>
+          <span className="base">{content} </span>
+          <span className="interim">{finalTranscript}</span>
+          <span className="final">{interimTranscript}</span>
           <span>
-            The question is: will grammarly fuck with this
+            <br />
             <br />
           </span>
-
-          <span className="base">this is some content </span>
-          <span className="interim">that is contentEditable</span>
-          <span className="final">that is interim</span>
         </p>
       </div>
       <div id="footer">

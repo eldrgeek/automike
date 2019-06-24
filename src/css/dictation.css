@@ -35,13 +35,13 @@ body {
   outline: 0px solid transparent;
 }
 .base{
-  color: rgb(214, 34, 34);
+  color: black;
 }
 .final{
   color: #fa1ab9;
 }
 .interim{
-  color: #151392;
+  color: #4b48da;
 }
 
 .text-box {
