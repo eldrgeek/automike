@@ -32,15 +32,15 @@ const Dictation = function({
     setContent(content + " " + finalTranscript);
     resetTranscript();
   };
-  if (interimTranscript !== lastInterim || finalTranscript !== lastFinal) {
+  if (interimTranscript === "" && finalTranscript !== "") {
     // debouncedChange(transferAndReset);
     lastInterim = interimTranscript;
     lastFinal = finalTranscript;
+    if (timeOut) {
+      clearTimeout(timeOut);
+    }
+    timeOut = setTimeout(() => transferAndReset(finalTranscript), 200);
   }
-  if (timeOut) {
-    clearTimeout(timeOut);
-  }
-  timeOut = setTimeout(() => transferAndReset(finalTranscript), 1000);
 
   const toggleListening = () => {
     if (listening) {
