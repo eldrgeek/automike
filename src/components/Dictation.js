@@ -9,7 +9,7 @@ const options = {
 };
 
 let startContainer = null;
-let timeOut = null;
+let timeOut;
 const Dictation = function({
   store,
   transcript,
@@ -23,18 +23,25 @@ const Dictation = function({
 }) {
   const [count, setCount] = useState(0);
   const [content, setContent] = useState("this is the initial \n value");
-  const transferAndReset = finalTranscript => {
-    timeOut = null;
-    setCount(count + 1);
-    setContent(content + " " + finalTranscript);
+  const transferAndReset = () => {
+    const localCopy = finalTranscript;
     resetTranscript();
+
+    timeOut = null;
+    console.log(`local='${localCopy}'`);
+
+    setCount(count + 1);
+    setContent(content + "" + localCopy);
   };
   if (interimTranscript === "" && finalTranscript !== "") {
     // debouncedChange(transferAndReset);
+    console.log("timeout is", timeOut);
     if (timeOut) {
+      console.log("clear", timeOut);
       clearTimeout(timeOut);
     }
-    timeOut = setTimeout(() => transferAndReset(finalTranscript), 200);
+    timeOut = setTimeout(transferAndReset, 1000);
+    console.log("set", timeOut);
   }
 
   const toggleListening = () => {
@@ -82,6 +89,7 @@ const Dictation = function({
         <button id="start" onClick={stopListening}>
           Stop
         </button>
+        S
         <button onClick={resetTranscript} id="stop">
           Reset
         </button>
