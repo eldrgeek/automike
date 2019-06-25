@@ -8,10 +8,7 @@ const options = {
   continuous: true
 };
 
-let listening = options.autoStart;
-
-let lastInterim = "";
-let lastFinal = "";
+let startContainer = null;
 let timeOut = null;
 const Dictation = function({
   store,
@@ -25,7 +22,7 @@ const Dictation = function({
   browserSupportsSpeechRecognition
 }) {
   const [count, setCount] = useState(0);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState("this is the initial \n value");
   const transferAndReset = finalTranscript => {
     timeOut = null;
     setCount(count + 1);
@@ -34,8 +31,6 @@ const Dictation = function({
   };
   if (interimTranscript === "" && finalTranscript !== "") {
     // debouncedChange(transferAndReset);
-    lastInterim = interimTranscript;
-    lastFinal = finalTranscript;
     if (timeOut) {
       clearTimeout(timeOut);
     }
@@ -50,13 +45,30 @@ const Dictation = function({
     }
   };
   const onClick = event => {
-    console.log("click", event.target.selectionStart);
+    console.log("click", event.target);
+    const sel = window.getSelection();
+    let range = window.getSelection().getRangeAt(0);
+    console.log("start", range.startContainer);
+    const para = document.querySelector("#para");
+
+    sel.extend(para, 0);
+    console.log(sel.toString());
+    // range.setStartAfter(editor)
+
+    //https://developer.mozilla.org/en-US/docs/Web/API/Selection/extend
+    //https://developer.mozilla.org/en-US/docs/Web/API/Range
   };
   if (finalTranscript !== "") console.log(finalTranscript);
+
   return (
     <div className="container">
-      <div className="editor">
-        <p contentEditable suppressContentEditableWarning={true}>
+      <div id="editor" className="editor">
+        <p
+          id="para"
+          onClick={onClick}
+          contentEditable
+          suppressContentEditableWarning={true}
+        >
           <span className="base">{content} </span>
           <span className="interim">{finalTranscript}</span>
           <span className="final">{interimTranscript}</span>
