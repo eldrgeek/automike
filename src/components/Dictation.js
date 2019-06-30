@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/dictation.css";
 // import init from "../DictationController.js"
 import SpeechRecognition from "react-speech-recognition";
@@ -10,6 +10,35 @@ const options = {
 
 let startContainer = null;
 let timeOut;
+/*
+`currentContent` and `insertPoint` are used 
+to along with interimTrancript and finalTranscript
+are used to determine 'displayedContent'.
+If there is no `interrimTranscript` and there is a
+`finalTranscript` then `currrentContent` and `insertPoint` are
+both updated and `displayedContent` is the same as
+`currentContent.` 
+
+*/
+
+const insertBreaks = string => {
+  // return (<div>{string}</div>)
+  return (
+    <React.Fragment>
+      {string.split("\n").map((e, index) => {
+        if (index === 0) {
+          return <React.Fragment key={index}>{e}</React.Fragment>;
+        }
+        return (
+          <React.Fragment key={index}>
+            <br />
+            {e}
+          </React.Fragment>
+        );
+      })}
+    </React.Fragment>
+  );
+};
 const Dictation = function({
   store,
   transcript,
@@ -22,27 +51,37 @@ const Dictation = function({
   browserSupportsSpeechRecognition
 }) {
   const [count, setCount] = useState(0);
-  const [content, setContent] = useState("this is the initial \n value");
-  const transferAndReset = () => {
-    const localCopy = finalTranscript;
-    resetTranscript();
-
-    timeOut = null;
-    console.log(`local='${localCopy}'`);
-
-    setCount(count + 1);
-    setContent(content + "" + localCopy);
-  };
-  if (interimTranscript === "" && finalTranscript !== "") {
-    // debouncedChange(transferAndReset);
-    console.log("timeout is", timeOut);
-    if (timeOut) {
-      console.log("clear", timeOut);
-      clearTimeout(timeOut);
-    }
-    timeOut = setTimeout(transferAndReset, 1000);
-    console.log("set", timeOut);
+  const [insertPoint, setInsertPoint] = useState(-1);
+  const [currentContent, setCurrentContent] = useState(
+    "this is the initial value \nline 2\nline3"
+  );
+  let leftBase, rightBase;
+  if (insertPoint === -1) {
+    leftBase = currentContent;
+    // leftBase = currentContent;
+    rightBase = "";
+  } else {
+    leftBase = currentContent.substr(0, insertPoint);
+    rightBase = currentContent.substr(insertPoint);
   }
+
+  useEffect(() => {
+    if (interimTranscript === "" && finalTranscript !== "") {
+      setCurrentContent(leftBase + " " + finalTranscript + " " + rightBase);
+      resetTranscript();
+      setCount(count + 1);
+      if (insertPoint !== -1)
+        setInsertPoint(insertPoint + 1 + finalTranscript.length);
+    }
+  }, [
+    leftBase,
+    rightBase,
+    finalTranscript,
+    resetTranscript,
+    interimTranscript,
+    count,
+    insertPoint
+  ]);
 
   const toggleListening = () => {
     if (listening) {
@@ -52,20 +91,18 @@ const Dictation = function({
     }
   };
   const onClick = event => {
-    console.log("click", event.target);
     const sel = window.getSelection();
-    let range = window.getSelection().getRangeAt(0);
-    console.log("start", range.startContainer);
     const para = document.querySelector("#para");
 
     sel.extend(para, 0);
-    console.log(sel.toString());
+    setInsertPoint(sel.toString().length);
+    console.log(sel.toString().length, sel.toString());
     // range.setStartAfter(editor)
 
     //https://developer.mozilla.org/en-US/docs/Web/API/Selection/extend
     //https://developer.mozilla.org/en-US/docs/Web/API/Range
   };
-  if (finalTranscript !== "") console.log(finalTranscript);
+  // if (finalTranscript !== "") console.log("final", finalTranscript);
 
   return (
     <div className="container">
@@ -76,9 +113,10 @@ const Dictation = function({
           contentEditable
           suppressContentEditableWarning={true}
         >
-          <span className="base">{content} </span>
-          <span className="interim">{finalTranscript}</span>
-          <span className="final">{interimTranscript}</span>
+          <span className="base">{insertBreaks(leftBase)}</span>
+          <span className="final">{finalTranscript}</span>
+          <span className="interim">{interimTranscript}</span>
+          <span className="base">{insertBreaks(rightBase)} </span>
           <span>
             <br />
             <br />
@@ -99,7 +137,7 @@ const Dictation = function({
         />
         <p className="status" id="status">
           {" "}
-          {count}{" "}
+          {count} {insertPoint}
         </p>
       </div>
     </div>
