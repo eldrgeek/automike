@@ -53,7 +53,7 @@ const Dictation = function({
   const [count, setCount] = useState(0);
   const [insertPoint, setInsertPoint] = useState(-1);
   const [currentContent, setCurrentContent] = useState(
-    "this is the initial value \nline 2\nline3"
+    "Hello Mark!\nTalk and works will appear\n...."
   );
   let leftBase, rightBase;
   if (insertPoint === -1) {
