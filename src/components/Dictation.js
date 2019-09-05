@@ -8,16 +8,16 @@ const options = {
   continuous: true
 };
 
-let startContainer = null;
-let timeOut;
+// let startContainer = null;
+// let timeOut;
 /*
-`currentContent` and `insertPoint` are used 
+`currentContent` and `insertPoint` are used
 to along with interimTrancript and finalTranscript
 are used to determine 'displayedContent'.
 If there is no `interrimTranscript` and there is a
 `finalTranscript` then `currrentContent` and `insertPoint` are
 both updated and `displayedContent` is the same as
-`currentContent.` 
+`currentContent.`
 
 */
 

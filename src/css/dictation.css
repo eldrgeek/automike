@@ -6,7 +6,7 @@ body,
 
 body {
   background: #ffffff;
-  color: #000000
+  color: #000000;
   font-size: 16px;
   font-family: "Kaushan Script", cursive;
   font-family: "Shadows Into Light", cursive;
@@ -28,7 +28,7 @@ body {
   height: 90%;
 }
 .editor {
- 
+
   height:100vh;
 }
 [contenteditable]:focus {
@@ -81,7 +81,7 @@ body {
     height:100vh;
     width: 85vw;
     max-width: 85vw;
-  } 
+  }
 .textarea {
     max-height: 90vh;
   }
