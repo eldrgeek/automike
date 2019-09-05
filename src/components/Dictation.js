@@ -93,10 +93,11 @@ const Dictation = function({
   const onClick = event => {
     const sel = window.getSelection();
     const para = document.querySelector("#para");
-
-    sel.extend(para, 0);
-    setInsertPoint(sel.toString().length);
-    console.log(sel.toString().length, sel.toString());
+    console.log(sel, sel.anchorNode, sel.focusOffset);
+    window.xxx = sel;
+    // sel.extend(para, 0);
+    // setInsertPoint(sel.toString().length);
+    // console.log(sel.toString().length, sel.toString());
     // range.setStartAfter(editor)
 
     //https://developer.mozilla.org/en-US/docs/Web/API/Selection/extend

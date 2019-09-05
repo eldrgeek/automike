@@ -44,6 +44,10 @@ body {
   color: #4b48da;
 }
 
+.left {
+  color: green;
+}
+
 .text-box {
   height: 100%;
   overflow: scroll;
